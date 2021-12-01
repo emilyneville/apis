@@ -15,7 +15,6 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 API_KEY = os.environ['TICKETMASTER_KEY']
 
-
 @app.route('/')
 def homepage():
     """Show homepage."""
@@ -41,7 +40,14 @@ def find_afterparties():
     sort = request.args.get('sort', '')
 
     url = 'https://app.ticketmaster.com/discovery/v2/events'
-    payload = {'apikey': API_KEY}
+    payload = {
+        'apikey': API_KEY, 
+        'keyword': keyword, 
+        'postcalCode': postalcode, 
+        'radius':radius,
+        'unit': unit,
+        'sort': sort}
+
 
     # TODO: Make a request to the Event Search endpoint to search for events
     #
@@ -53,11 +59,24 @@ def find_afterparties():
     #
     # - Replace the empty list in `events` with the list of events from your
     #   search results
+    # http://localhost:5000/afterparty/search?keyword=&zipcode=97222&radius=100&unit=miles&sort=distance%2Casc
+    # https://app.ticketmaster.com/discovery/v2/events?apikey=GnH8RWAWMhvA7OhB8OIjgydFXaCAArZF&postalCode=10001&radius=10&locale=*
 
-    data = {'Test': ['This is just some test data'],
-            'page': {'totalElements': 1}}
+
+    res = requests.get(url, params=payload)
+    data = res.json()
+    # data = {'Test': ['This is just some test data'],
+    #         'page': {'totalElements': 1}}
     events = []
+    # events = data['_embedded']['events']
+    # event = events[0]
+    # event['name']
+    
+    json_dic = data['_embedded']['events']
 
+    for event in json_dic:
+        events.append(event['name'])
+        
     return render_template('search-results.html',
                            pformat=pformat,
                            data=data,
