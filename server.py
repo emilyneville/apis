@@ -61,8 +61,7 @@ def find_afterparties():
     #   search results
     # http://localhost:5000/afterparty/search?keyword=&zipcode=97222&radius=100&unit=miles&sort=distance%2Casc
     # https://app.ticketmaster.com/discovery/v2/events?apikey=GnH8RWAWMhvA7OhB8OIjgydFXaCAArZF&postalCode=10001&radius=10&locale=*
-
-
+    
     res = requests.get(url, params=payload)
     data = res.json()
     # data = {'Test': ['This is just some test data'],
@@ -92,8 +91,26 @@ def get_event_details(id):
     """View the details of an event."""
 
     # TODO: Finish implementing this view function
+    
+    #get the event's name, description and image URL
+    url = f"https://app.ticketmaster.com/discovery/v2/events/{id}"
+
+    # event = events[id]
 
     return render_template('event-details.html')
+
+# @app.route("/melon/<melon_id>")
+# def show_melon(melon_id):
+#     """Return page showing the details of a given melon.
+
+#     Show all info about a melon. Also, provide a button to buy that melon.
+#     """
+
+#     melon = melons.get_by_id(melon_id)
+#     print(melon)
+#     return render_template("melon_details.html",
+#                            display_melon=melon)
+
 
 
 if __name__ == '__main__':
