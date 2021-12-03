@@ -68,15 +68,14 @@ def find_afterparties():
     # data = {'Test': ['This is just some test data'],
     #         'page': {'totalElements': 1}}
     events = []
-    # events = data['_embedded']['events']
     # event = events[0]
     # event['name']
     
     json_dic = data['_embedded']['events']
-
+    #event_name = json_dic['e']
     for event in json_dic:
-        events.append(event['name'])
-        
+        events.append(event)
+
     return render_template('search-results.html',
                            pformat=pformat,
                            data=data,
